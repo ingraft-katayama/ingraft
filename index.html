@@ -4,685 +4,190 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ingraft inc.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --black: #fafaf8;
-      --white: #0d0d0d;
-      --gray-light: #1a1a1a;
-      --gray-mid: #6b6560;
-      --gray-dark: #b8b3ab;
-      --accent: #c8b89a;
-      --serif: 'Noto Serif JP', serif;
-      --sans: 'Noto Sans JP', sans-serif;
-      --inter: 'Inter', sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: var(--white);
-      color: var(--black);
-      font-family: var(--sans);
+      background: #0d0d0d;
+      color: #fafaf8;
+      font-family: 'Inter', sans-serif;
       font-weight: 300;
       line-height: 1.8;
-      overflow-x: hidden;
     }
 
-    /* ── Navigation ── */
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 28px 48px;
-      mix-blend-mode: multiply;
+      padding: 40px 48px;
     }
 
     .nav-logo {
-      font-family: var(--inter);
-      font-size: 18px;
-      font-weight: 500;
+      font-size: 16px;
       letter-spacing: 0.05em;
-      color: var(--black);
-      text-decoration: none;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
+    .nav-contact {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+      transition: opacity 0.3s;
     }
 
-    .nav-links a {
-      font-family: var(--inter);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--black);
-      text-decoration: none;
-      transition: opacity 0.3s ease;
-    }
+    .nav-contact:hover { opacity: 1; }
 
-    .nav-links a:hover {
-      opacity: 0.4;
-    }
-
-    /* ── Hero ── */
+    /* Hero */
     .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-left {
+      min-height: 80vh;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 120px 48px 80px;
+      align-items: flex-end;
+      padding: 0 48px 80px;
     }
 
-    .hero-label {
-      font-family: var(--inter);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-      margin-bottom: 32px;
-    }
-
-    .hero-tagline {
-      font-family: var(--serif);
-      font-size: clamp(36px, 4.5vw, 64px);
+    .hero h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(40px, 6vw, 80px);
       font-weight: 300;
       line-height: 1.4;
       letter-spacing: 0.02em;
-      color: var(--black);
     }
 
-    .hero-tagline em {
+    .hero h1 em {
       font-style: italic;
-      color: var(--gray-dark);
+      opacity: 0.5;
     }
 
-    .hero-right {
-      background: var(--gray-light);
-      position: relative;
-      overflow: hidden;
+    /* Sections */
+    section {
+      padding: 80px 48px;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
-    .hero-right::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 40px,
-        rgba(200, 184, 154, 0.08) 40px,
-        rgba(200, 184, 154, 0.08) 41px
-      );
-    }
-
-    .hero-word {
-      position: absolute;
-      bottom: 80px;
-      left: 48px;
-      font-family: var(--inter);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 40px;
-      right: 48px;
-      font-family: var(--inter);
+    .label {
       font-size: 10px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--gray-mid);
-      writing-mode: vertical-rl;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .hero-scroll::before {
-      content: '';
-      width: 1px;
-      height: 60px;
-      background: var(--accent);
-    }
-
-    /* ── Philosophy ── */
-    .philosophy {
-      padding: 160px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 80px;
-      align-items: start;
-    }
-
-    .section-label {
-      font-family: var(--inter);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-      padding-top: 8px;
-    }
-
-    .philosophy-text {
-      font-family: var(--serif);
-      font-size: clamp(18px, 2vw, 24px);
-      font-weight: 300;
-      line-height: 2;
-      letter-spacing: 0.05em;
-      color: var(--black);
-    }
-
-    .philosophy-text strong {
-      font-weight: 500;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      margin: 0 48px;
       opacity: 0.4;
+      margin-bottom: 32px;
     }
 
-    /* ── Company ── */
-    .company {
-      padding: 120px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .company-header {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 80px;
-      margin-bottom: 80px;
-    }
-
-    .company-title {
-      font-family: var(--inter);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-    }
-
-    .company-table {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
+    /* Company */
     .company-row {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      padding: 28px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      align-items: baseline;
-      gap: 40px;
-    }
-
-    .company-row:first-child {
-      border-top: 1px solid rgba(0,0,0,0.07);
-    }
-
-    .company-key {
-      font-family: var(--inter);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: var(--gray-mid);
-    }
-
-    .company-val {
-      font-family: var(--sans);
-      font-size: 15px;
-      font-weight: 300;
-      color: var(--black);
-      letter-spacing: 0.03em;
-    }
-
-    .company-val a {
-      color: var(--black);
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 1px;
-      transition: opacity 0.3s;
-    }
-
-    .company-val a:hover {
-      opacity: 0.5;
-    }
-
-    /* ── Founders ── */
-    .founders {
-      background: var(--black);
-      padding: 140px 48px;
-      color: var(--white);
-    }
-
-    .founders-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .founders-header {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 80px;
-      margin-bottom: 100px;
-    }
-
-    .founders-label {
-      font-family: var(--inter);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-      padding-top: 8px;
-    }
-
-    .founders-subtitle {
-      font-family: var(--serif);
-      font-size: clamp(20px, 2.5vw, 30px);
-      font-weight: 300;
-      line-height: 1.8;
-      letter-spacing: 0.05em;
-      color: rgba(255,255,255,0.85);
-    }
-
-    .founders-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-    }
-
-    .founder-card {
-      background: rgba(255,255,255,0.03);
-      padding: 56px 48px;
-      transition: background 0.4s ease;
-    }
-
-    .founder-card:hover {
-      background: rgba(255,255,255,0.06);
-    }
-
-    .founder-number {
-      font-family: var(--inter);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      margin-bottom: 36px;
-    }
-
-    .founder-name {
-      font-family: var(--serif);
-      font-size: 28px;
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      color: var(--white);
-      margin-bottom: 6px;
-    }
-
-    .founder-role {
-      font-family: var(--inter);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 36px;
-    }
-
-    .founder-bio {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 300;
-      line-height: 2;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.03em;
-    }
-
-    /* ── Contact ── */
-    .contact {
-      padding: 160px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .contact-label {
-      font-family: var(--inter);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-mid);
-    }
-
-    .contact-content {
       display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
-
-    .contact-heading {
-      font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 48px);
-      font-weight: 300;
-      line-height: 1.4;
-      letter-spacing: 0.03em;
-    }
-
-    .contact-email {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--inter);
-      font-size: 16px;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      color: var(--black);
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 4px;
-      transition: opacity 0.3s;
-    }
-
-    .contact-email:hover {
-      opacity: 0.5;
-    }
-
-    .contact-email::after {
-      content: '→';
+      gap: 48px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
       font-size: 14px;
     }
 
-    /* ── Footer ── */
-    footer {
-      border-top: 1px solid rgba(0,0,0,0.08);
-      padding: 40px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-copy {
-      font-family: var(--inter);
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: var(--gray-mid);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 32px;
-    }
-
-    .footer-links a {
-      font-family: var(--inter);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gray-dark);
-      text-decoration: none;
-      transition: opacity 0.3s;
-    }
-
-    .footer-links a:hover {
+    .company-key {
+      width: 120px;
+      flex-shrink: 0;
       opacity: 0.4;
     }
 
-    /* ── Fade-in animation ── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    /* Founders */
+    .founders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .founder-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 22px;
+      font-weight: 300;
+      margin-bottom: 4px;
     }
 
-    /* ── Responsive ── */
+    .founder-role {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+    }
+
+    /* Contact */
+    .contact-email {
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .contact-email:hover { opacity: 1; }
+
+    /* Footer */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      opacity: 0.3;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      nav {
-        padding: 24px 24px;
-      }
-
-      .nav-links {
-        gap: 24px;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr auto;
-      }
-
-      .hero-left {
-        padding: 120px 24px 60px;
-        justify-content: flex-end;
-        min-height: 70vh;
-      }
-
-      .hero-right {
-        height: 40vh;
-      }
-
-      .philosophy,
-      .company-header,
-      .founders-header,
-      .contact {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-
-      .philosophy,
-      .company,
-      .contact {
-        padding: 80px 24px;
-      }
-
-      .founders {
-        padding: 80px 24px;
-      }
-
-      .founders-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .founder-card {
-        padding: 40px 24px;
-      }
-
-      .company-row {
-        grid-template-columns: 120px 1fr;
-        gap: 16px;
-      }
-
-      footer {
-        padding: 32px 24px;
-        flex-direction: column;
-        gap: 20px;
-        align-items: flex-start;
-      }
-
-      .divider {
-        margin: 0 24px;
-      }
+      nav, .hero, section, footer { padding-left: 24px; padding-right: 24px; }
+      .founders-grid { grid-template-columns: 1fr; }
+      .company-row { gap: 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
   <nav>
-    <a href="#" class="nav-logo">ingraft</a>
-    <ul class="nav-links">
-      <li><a href="#company">Company</a></li>
-      <li><a href="#founders">Founders</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <span class="nav-logo">ingraft</span>
+    <a href="mailto:info@ingraft.jp" class="nav-contact">Contact</a>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-left">
-      <p class="hero-label">Digital Creative — Produce &amp; Direction</p>
-      <h1 class="hero-tagline">
-        異なるものを<br>
-        <em>接続し、</em><br>
-        価値を生む。
-      </h1>
-    </div>
-    <div class="hero-right">
-      <span class="hero-word">接ぎ木 — ingraft</span>
-      <span class="hero-scroll">Scroll</span>
-    </div>
+  <section class="hero" style="border:none;">
+    <h1>
+      異なるものを<br>
+      <em>接続し、</em><br>
+      価値を生む。
+    </h1>
   </section>
 
-  <!-- Philosophy -->
-  <section class="philosophy fade-in">
-    <p class="section-label">Philosophy</p>
-    <p class="philosophy-text">
-      私たちは、デジタルクリエイティブ領域を中心とした、<strong>プロデュース／ディレクションカンパニー</strong>です。ingraftとは「接ぎ木」の意。チームで取り組むプロジェクトにおいて、能力や個性の異なるもの同士を適切に接続することで、想像以上の価値を生み出します。
+  <section>
+    <p class="label">Philosophy</p>
+    <p style="font-family:'Noto Serif JP',serif; font-size:clamp(16px,1.8vw,22px); line-height:2; opacity:0.8;">
+      デジタルクリエイティブ領域を中心とした、プロデュース／ディレクションカンパニー。<br>
+      能力や個性の異なるもの同士を適切に接続し、想像以上の価値を生み出す。
     </p>
   </section>
 
-  <div class="divider"></div>
+  <section id="company">
+    <p class="label">Company</p>
+    <div class="company-row"><span class="company-key">会社名</span><span>株式会社ingraft</span></div>
+    <div class="company-row"><span class="company-key">設立</span><span>2022年5月2日</span></div>
+    <div class="company-row"><span class="company-key">代表取締役</span><span>山本 真也・津留 正和</span></div>
+    <div class="company-row"><span class="company-key">業務内容</span><span>プロデュース／プランニング／ディレクション／プロジェクトマネジメント</span></div>
+  </section>
 
-  <!-- Company -->
-  <section class="company fade-in" id="company">
-    <div class="company-header">
-      <p class="company-title">Company</p>
-      <div></div>
-    </div>
-    <div class="company-table">
-      <div class="company-row">
-        <span class="company-key">会社名</span>
-        <span class="company-val">株式会社ingraft</span>
+  <section id="founders">
+    <p class="label">Founders</p>
+    <div class="founders-grid">
+      <div>
+        <p class="founder-name">山本 真也</p>
+        <p class="founder-role">Producer / Planner</p>
       </div>
-      <div class="company-row">
-        <span class="company-key">設立日</span>
-        <span class="company-val">2022年5月2日</span>
-      </div>
-      <div class="company-row">
-        <span class="company-key">資本金</span>
-        <span class="company-val">1,500,000円</span>
-      </div>
-      <div class="company-row">
-        <span class="company-key">代表取締役</span>
-        <span class="company-val">山本 真也・津留 正和</span>
-      </div>
-      <div class="company-row">
-        <span class="company-key">業務内容</span>
-        <span class="company-val">プロデュース／プランニング／ディレクション／プロジェクトマネジメント</span>
-      </div>
-      <div class="company-row">
-        <span class="company-key">お問い合わせ</span>
-        <span class="company-val"><a href="mailto:info@ingraft.jp">info@ingraft.jp</a></span>
+      <div>
+        <p class="founder-name">津留 正和</p>
+        <p class="founder-role">Producer / Project Manager</p>
       </div>
     </div>
   </section>
 
-  <!-- Founders -->
-  <section class="founders fade-in" id="founders">
-    <div class="founders-inner">
-      <div class="founders-header">
-        <p class="founders-label">Founders</p>
-        <p class="founders-subtitle">クライアントと制作チームの垣根を外し、<br>ひとつのチームとしてベストなパフォーマンスを引き出す。</p>
-      </div>
-      <div class="founders-grid">
-        <div class="founder-card">
-          <p class="founder-number">01</p>
-          <h2 class="founder-name">山本 真也</h2>
-          <p class="founder-role">Producer / Planner</p>
-          <p class="founder-bio">
-            1986年生まれ。2011年よりSHIFTBRAIN inc.でプランナー、プロデューサー、クリエイティブディレクター等を歴任し、2020年からは執行役員COOとして従事。2022年5月にingraft inc.を共同創業し現職。クライアントと制作チームの垣根を外し、ひとつのチームとしてベストなパフォーマンスを引き出すことが信条。主な受賞歴はRed Dot Design Award、Communication Arts Award of Excellence、FWA、Awwwards、日本サインデザイン賞など。
-          </p>
-        </div>
-        <div class="founder-card">
-          <p class="founder-number">02</p>
-          <h2 class="founder-name">津留 正和</h2>
-          <p class="founder-role">Producer / Project Manager</p>
-          <p class="founder-bio">
-            1987年生まれ。2009年よりamana inc.で写真・映像制作のプロデュースに従事。2018年よりSHIFTBRAIN inc.でプロジェクトマネジメントチームのチームリード。2020年からはkusabi inc.にて、広くコンテンツクリエイションのプロデュースに従事。プロジェクトオーナーの課題や願いを適切に理解した上で、クリエイティブ制作まで首尾一貫したプロジェクトマネジメントを心がける。自動BGM環境システム「AISO」のメンバーとしても活動中。
-          </p>
-        </div>
-      </div>
-    </div>
+  <section id="contact">
+    <p class="label">Contact</p>
+    <a href="mailto:info@ingraft.jp" class="contact-email">info@ingraft.jp</a>
   </section>
 
-  <!-- Contact -->
-  <section class="contact fade-in" id="contact">
-    <p class="contact-label">Contact</p>
-    <div class="contact-content">
-      <h2 class="contact-heading">プロジェクトのご相談、<br>お気軽にどうぞ。</h2>
-      <a href="mailto:info@ingraft.jp" class="contact-email">info@ingraft.jp</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p class="footer-copy">©2022–2026 ingraft inc.</p>
-    <div class="footer-links">
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
-      <a href="mailto:info@ingraft.jp">Contact</a>
-    </div>
-  </footer>
-
-  <script>
-    // Fade-in on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+  <footer>©2022–2026 ingraft inc.</footer>
 
 </body>
 </html>
