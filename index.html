@@ -319,6 +319,41 @@
       .company-row { grid-template-columns: 1fr; gap: 8px; }
     }
 
+    /* Cursor */
+    body { cursor: none; }
+
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, opacity 0.3s;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, opacity 0.3s, border-color 0.3s;
+      opacity: 0.5;
+    }
+
+    .cursor-ring.hover {
+      width: 64px;
+      height: 64px;
+      opacity: 1;
+      border-color: var(--accent);
+    }
+
     /* Animate in */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(32px); }
@@ -431,6 +466,40 @@
     <span>©2022–2026 ingraft inc.</span>
     <span>Tokyo, Japan</span>
   </footer>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <script>
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    // Ring follows with delay
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Hover effect on links and cards
+    document.querySelectorAll('a, .founder-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    });
+  </script>
 
 </body>
 </html>
