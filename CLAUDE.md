@@ -22,7 +22,7 @@
 ### 2. リポジトリのクローン
 
 ```bash
-git clone https://github.com/ingraft-katayama/ingraft.git
+git clone https://github.com/ingraft/ingraft.git
 cd ingraft
 ```
 
