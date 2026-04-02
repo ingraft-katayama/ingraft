@@ -1,0 +1,128 @@
+name: Notify Config Changes to Slack
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.claude/skills/**'
+      - '.claude/settings.json'
+      - '.mcp.json'
+      - 'CLAUDE.md'
+      - '.github/workflows/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed files
+        id: changes
+        run: |
+          # 変更されたファイルを検出（対象パスのみ）
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- \
+            '.claude/skills/' \
+            '.claude/settings.json' \
+            '.mcp.json' \
+            'CLAUDE.md' \
+            '.github/workflows/' 2>/dev/null || echo "")
+
+          if [ -z "$CHANGED" ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "found=true" >> "$GITHUB_OUTPUT"
+
+          # ファイル一覧を保存（改行区切り → カンマ区切りで1行に）
+          FILE_LIST=$(echo "$CHANGED" | paste -sd ',' -)
+          echo "files=$FILE_LIST" >> "$GITHUB_OUTPUT"
+
+          # 変更カテゴリを日本語で生成
+          CATEGORIES=""
+          echo "$CHANGED" | grep -q '^\.claude/skills/' && CATEGORIES="${CATEGORIES}スキル定義, "
+          echo "$CHANGED" | grep -q '^\.claude/settings\.json$' && CATEGORIES="${CATEGORIES}権限設定, "
+          echo "$CHANGED" | grep -q '^\.mcp\.json$' && CATEGORIES="${CATEGORIES}MCP接続設定, "
+          echo "$CHANGED" | grep -q '^CLAUDE\.md$' && CATEGORIES="${CATEGORIES}プロジェクト規約, "
+          echo "$CHANGED" | grep -q '^\.github/workflows/' && CATEGORIES="${CATEGORIES}CI/CD, "
+          # 末尾のカンマを除去
+          CATEGORIES=$(echo "$CATEGORIES" | sed 's/, $//')
+
+          echo "categories=$CATEGORIES" >> "$GITHUB_OUTPUT"
+
+      - name: Send Slack notification
+        if: steps.changes.outputs.found == 'true'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          FILES: ${{ steps.changes.outputs.files }}
+          CATEGORIES: ${{ steps.changes.outputs.categories }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          AUTHOR: ${{ github.actor }}
+        run: |
+          # 変更ファイルをSlack用にフォーマット（カンマ区切り → 箇条書き）
+          FILE_LIST=$(echo "$FILES" | tr ',' '\n' | sed 's/^/• /' | paste -sd $'\n' -)
+
+          # jqで安全にJSONを生成
+          PAYLOAD=$(jq -n \
+            --arg categories "$CATEGORIES" \
+            --arg file_list "$FILE_LIST" \
+            --arg author "$AUTHOR" \
+            --arg commit_url "$COMMIT_URL" \
+            '{
+              text: ("<!channel> プロジェクト設定が更新されました（" + $categories + "）"),
+              blocks: [
+                {
+                  type: "section",
+                  text: {
+                    type: "mrkdwn",
+                    text: "<!channel>\n:loudspeaker: *プロジェクト設定が更新されました*"
+                  }
+                },
+                {
+                  type: "section",
+                  fields: [
+                    {
+                      type: "mrkdwn",
+                      text: ("*変更カテゴリ:*\n" + $categories)
+                    },
+                    {
+                      type: "mrkdwn",
+                      text: ("*変更者:*\n" + $author)
+                    }
+                  ]
+                },
+                {
+                  type: "section",
+                  text: {
+                    type: "mrkdwn",
+                    text: ("*変更ファイル:*\n" + $file_list)
+                  }
+                },
+                {
+                  type: "context",
+                  elements: [
+                    {
+                      type: "mrkdwn",
+                      text: ("<" + $commit_url + "|コミットを見る> | `git pull` で反映されます")
+                    }
+                  ]
+                }
+              ]
+            }')
+
+          # 送信
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H 'Content-type: application/json' \
+            --data "$PAYLOAD" \
+            "$SLACK_WEBHOOK_URL")
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::Slack notification failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
+
+          echo "Slack notification sent successfully"
