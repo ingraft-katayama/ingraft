@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(node *)",
+      "Bash(npx *)",
+      "Bash(python3 *)",
+      "Bash(curl *)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(mkdir *)",
+      "Bash(open *)",
+      "Bash(rsync *)",
+      "Bash(scp *)",
+      "Bash(ssh *)"
+    ]
+  }
+}

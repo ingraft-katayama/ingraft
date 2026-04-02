@@ -1,0 +1,222 @@
+# ingraft inc. プロジェクト規約
+
+## 会社概要
+
+株式会社ingraft（イングラフト）は、東京を拠点とするデジタルクリエイティブ制作会社です。
+このリポジトリは、自社サイト・動画制作・SNS運用の3つの業務をClaude Codeで統合管理するためのワークスペースです。
+
+## チーム構成
+
+- 2〜3名（エンジニア＋非エンジニア混合）
+- 全員がClaude Codeを使って作業する
+- 技術レベルに関係なく、スキル（後述）を使えば同じ結果を得られる設計
+
+---
+
+## 新メンバー向けセットアップ手順
+
+### 1. Claude Codeのインストールとログイン
+
+チームプランのアカウントでClaude Codeにログインしてください。
+
+### 2. リポジトリのクローン
+
+```bash
+git clone https://github.com/ingraft-katayama/ingraft.git
+cd ingraft
+```
+
+### 3. 環境変数の設定
+
+以下の環境変数を `~/.zshrc` に追加してください（値はチームリーダーから受け取る）：
+
+```bash
+# 必須
+export GITHUB_PAT="your-github-personal-access-token"
+
+# SNS運用で必要（Phase 2以降）
+export TWITTER_API_KEY="..."
+export TWITTER_API_SECRET="..."
+export TWITTER_ACCESS_TOKEN="..."
+export TWITTER_ACCESS_SECRET="..."
+export INSTAGRAM_ACCESS_TOKEN="..."
+export INSTAGRAM_BUSINESS_ID="..."
+
+# 動画・YouTube（Phase 3以降）
+export YOUTUBE_API_KEY="..."
+export YOUTUBE_CLIENT_ID="..."
+export YOUTUBE_CLIENT_SECRET="..."
+
+# アナリティクス（Phase 2以降）
+export GA_PROPERTY_ID="..."
+export GA_SERVICE_ACCOUNT_KEY_PATH="..."
+```
+
+設定後、ターミナルを再起動するか `source ~/.zshrc` を実行。
+
+### 4. MCP認証
+
+初回のみ、以下のMCP接続で認証が求められます：
+- **Slack**: OAuthフローでブラウザが開くので、会社のSlackワークスペースで認証
+- **GitHub**: 環境変数 `GITHUB_PAT` が設定されていれば自動接続
+- **Figma**: Claude Codeが初回接続時に案内します
+
+### 5. 動作確認
+
+Claude Codeで以下を試してください：
+- 「プロジェクトの概要を教えて」→ このファイルの内容が要約されればOK
+- `/deploy` → デプロイスキルが認識されればOK
+
+---
+
+## 3つの業務領域
+
+### 1. 自社サイト管理
+
+**ワークフロー:**
+1. Figmaでデザインを制作・更新
+2. `/figma-to-code` でデザインをコードに変換
+3. ローカルプレビューで確認
+4. `/deploy` でサイトを公開
+
+**ホスティング:** GitHub Pages（`main`ブランチへのpush時に自動デプロイ）
+
+**アクセス解析:**
+- `/analytics-report` でGoogle Analyticsのレポートを生成
+- レポートはSlackに通知される（週次スケジュール）
+
+### 2. 動画制作
+
+**ワークフロー:**
+1. Google Drive上の台本・素材を準備
+2. `/video-edit` で動画編集（FFmpegベース）
+3. 出力を人間が確認、修正指示があれば再編集
+4. ショート動画への切り出し
+5. YouTube/SNSへアップロード
+
+**対応操作:** トリミング、結合、テロップ追加、ウォーターマーク、ショート切り出し
+
+**前提条件:** FFmpegがインストールされていること（`brew install ffmpeg`）
+
+### 3. SNS運用（X / Instagram / YouTube）
+
+**ワークフロー:**
+1. `/trend-report` でトレンドを調査
+2. `/sns-post` で投稿原稿を作成
+3. 原稿は `sns/drafts/` に保存され、Slackに通知
+4. **人間がレビュー・承認**（← 必須）
+5. 承認後、Claudeが各プラットフォームに投稿
+
+**重要ルール: SNS投稿は必ず人間が確認してから公開すること。**
+
+---
+
+## 利用可能なスキル（コマンド）
+
+誰でも以下のスキルを使って作業できます：
+
+| コマンド | 説明 |
+|----------|------|
+| `/deploy` | サイトをデプロイ（バリデーション → commit → push → 自動公開） |
+| `/figma-to-code` | Figmaデザインをコードに変換 |
+| `/sns-post` | SNS投稿原稿を作成（レビュー待ち状態で保存） |
+| `/trend-report` | SNSトレンドを収集してレポート生成 |
+| `/analytics-report` | Google Analyticsのアクセス解析レポートを生成 |
+| `/video-edit` | 動画を編集（FFmpegベース） |
+
+### 自然言語での指示例
+
+スキルを使わなくても、日本語で指示すればClaude Codeが適切に対応します：
+- 「Figmaの最新デザインでトップページを更新して」
+- 「今週のアクセス解析レポートを作って」
+- 「この動画の1:30〜2:00を切り出してショート動画にして」
+- 「明日のX投稿を3パターン作って」
+- 「今週のSNSトレンドを調べて」
+
+---
+
+## コーディング規約
+
+### 全般
+- Figmaデザインに準拠すること
+- レスポンシブ対応必須
+- セマンティックHTML
+- アクセシビリティ考慮（alt属性、ARIA属性）
+
+### コミットメッセージ
+日本語で記述。プレフィックスを付ける：
+- `design:` デザイン変更
+- `feature:` 新機能追加
+- `fix:` バグ修正
+- `content:` コンテンツ更新
+- `config:` 設定変更
+- `sns:` SNS関連
+- `video:` 動画関連
+
+### ブランチ戦略
+- `main` → 本番（自動デプロイ対象）
+- 作業はブランチを切ってPRで`main`にマージ
+
+---
+
+## ディレクトリ構成
+
+```
+/
+├── CLAUDE.md              ← このファイル（プロジェクト規約）
+├── .mcp.json              ← MCP接続設定（チーム共有）
+├── .claude/
+│   ├── settings.json      ← 権限設定（チーム共有）
+│   ├── launch.json        ← ローカルプレビュー設定
+│   └── skills/            ← カスタムスキル定義
+├── .github/
+│   └── workflows/         ← CI/CDワークフロー
+├── sns/
+│   ├── drafts/            ← 投稿下書き（レビュー用）
+│   ├── templates/         ← 投稿テンプレート
+│   └── calendar.md        ← コンテンツカレンダー
+├── video/
+│   └── scripts/           ← 動画台本
+└── .gitignore
+```
+
+---
+
+## セキュリティルール
+
+- **APIキー・トークンは絶対にコミットしない**（環境変数で管理）
+- `.env`、`*.key`、認証情報ファイルは `.gitignore` に含まれている
+- プロジェクトの `.mcp.json` には秘密情報を直接書かない（`${ENV_VAR}` で参照）
+- SNS投稿は必ず人間の承認を経てから公開
+
+---
+
+## 定期タスク
+
+### GitHub Actions（マシン不要、自動実行）
+| タスク | スケジュール | 内容 |
+|--------|------------|------|
+| weekly-analytics | 毎週月曜 9:15 | アクセス解析レポート → Slack通知 |
+| trend-report | 火・木 10:05 | SNSトレンド収集 → Slack通知 |
+
+### Mac mini 常時稼働（ブラウザ操作等が必要なタスク）
+| タスク | スケジュール | 内容 |
+|--------|------------|------|
+| morning-summary | 平日 8:50 | メールサマリー → Slack通知 |
+
+---
+
+## トラブルシューティング
+
+### MCP接続エラー
+- 環境変数が正しく設定されているか確認: `echo $GITHUB_PAT`
+- Slack OAuthが期限切れの場合は再認証が必要
+
+### デプロイが動かない
+- `git status` で未コミットの変更がないか確認
+- `main`ブランチにいるか確認
+- GitHub Pagesが有効になっているか確認（リポジトリSettings > Pages）
+
+### FFmpegエラー
+- インストール確認: `ffmpeg -version`
+- 未インストールの場合: `brew install ffmpeg`

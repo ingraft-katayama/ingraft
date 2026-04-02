@@ -1,0 +1,41 @@
+# 環境変数・秘密情報
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# 動画素材・書き出し（大容量ファイル）
+video/exports/
+video/footage/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+
+# SNS下書き（レビュー中の未公開コンテンツ）
+sns/drafts/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js（将来的に使用する場合）
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Claude Code ローカル設定（個人設定は共有しない）
+.claude/settings.local.json
