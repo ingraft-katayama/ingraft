@@ -1,24 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git *)",
-      "Bash(gh *)",
-      "Bash(node *)",
-      "Bash(npx *)",
-      "Bash(python3 *)",
-      "Bash(curl *)",
-      "Bash(ffmpeg *)",
-      "Bash(ffprobe *)",
-      "Bash(ls *)",
-      "Bash(cat *)",
-      "Bash(cp *)",
-      "Bash(mv *)",
-      "Bash(mkdir *)",
-      "Bash(open *)",
-      "Bash(rsync *)",
-      "Bash(scp *)",
-      "Bash(ssh *)",
-      "mcp__slack__*",
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "mcp__claude_ai_Slack__*",
+      "mcp__claude_ai_Gmail__*",
+      "mcp__claude_ai_Google_Calendar__*",
       "mcp__github__*",
       "mcp__figma__*"
     ]
